@@ -35,10 +35,6 @@ double getAccZ() {
     return ((double) s18(zRaw)) / 1024 * GRAVITY;
 }
 
-__s32 getAccZRaw() {
-    return (i2c_smbus_read_byte_data(fd, 0x2D) << 8 | i2c_smbus_read_byte_data(fd, 0x2C)) >> 4;
-}
-
 double getSynVecSize(double v1, double v2, double v3) {
     return sqrt(pow(v1, 2) + pow(v2, 2) + pow(v3, 2));
 }
@@ -68,11 +64,10 @@ int main(int argc, char **argv) {
     if (init() < 0) return -1;
     startMeasurement();
     __s32 sum = 0;
-    for (int i = 0; i < 1000; i++) {
-        sum += s18(getAccZRaw());
+    for (int i = 0; i < 2000; i++) {
+        printf("%d,", s18((i2c_smbus_read_byte_data(fd, 0x2D) << 8 | i2c_smbus_read_byte_data(fd, 0x2C)) >> 4));
         usleep(INTERVAL);
     }
     stopMeasurement();
-    printf("%d\n", sum / 5000);
     return 0;
 }
