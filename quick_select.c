@@ -3,6 +3,7 @@ double quick_select(double A[], int n, int k){
     double tmp, pivot;
 
     pivot = A[0];
+    printf("%lf\n", pivot);
     for (h = i = j = 1; i < n; i++){
         if (A[i] < pivot){
             tmp = A[j];
