@@ -55,7 +55,7 @@ double FILTER[N1];
 void initFilter() {
     int i;
     for (i = 0; i < N1; i++) {
-        double freq = i * FREQ / N;
+        double freq = i * FREQ / N + 0.0000000001 ;
         FILTER[i] = sqrt(1 / freq) * hcf(freq) * sqrt(1-exp(-pow(freq*2, 3)));
     }
 }
@@ -93,7 +93,7 @@ void fft(cmplx *A, int k){
     }
 }
 
-cmplx CC[N1];
+cmplx CC[N];
 
 // n must be odd
 void filtering(double *A){
@@ -108,16 +108,18 @@ void filtering(double *A){
     printf("gfaw\n");
     fft(CC, R1);
     printf("awfhuioe\n");
-    for (i = 0; i < N1; i++) {
+    CC[0] = creal(CC[0]) * FILTER[0];
+    CC[N1] = creal(CC[N1]) * FILTER[N1];
+    for (i = 1; i < N1; i++) {
         tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
         tmp2 = (CC[i] - conj(CC[N1-i])) / -2 * I * OMEGA[i<<1];
         CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
+        CC[N1+i] = conj((tmp1 + tmp2) * FILTER[N1-i-1]);
     }
     printf("fawef\n");
-    fft(CC, R1);
+    fft(CC, R);
     printf("afowe\n");
-    for (i = 0; i < N1; i++) {
-        A[2*i] = creal(CC[i]);
-        A[2*i+1] = -cimag(CC[i]);
+    for (i = 0; i < N; i++) {
+        A[i] = creal(CC[i]);
     }
 }
