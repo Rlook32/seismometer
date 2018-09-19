@@ -120,6 +120,6 @@ void filtering(double *A){
     fft(CC, R);
     printf("afowe\n");
     for (i = 0; i < N; i++) {
-        A[i] = creal(CC[i]);
+        A[i] = creal(CC[i]) / N;
     }
 }
