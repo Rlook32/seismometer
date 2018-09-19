@@ -77,15 +77,15 @@ int main(int argc, char **argv) {
         usleep(INTERVAL);
     }
     stopMeasurement();
-    printf("finished mesuring and now start filtering")
+    printf("finished mesuring and now start filtering");
     filtering(X);
     filtering(Y);
     filtering(Z);
-    printf("finished filtering and now start calculating SIS")
+    printf("finished filtering and now start calculating SIS");
     for (int i = 0; i < N; i++) {
         X[i] = getSynVecSize(X[i], Y[i], Z[i]);
     }
-    printf("finished caluculating SIS")
+    printf("finished caluculating SIS");
     printf("SIS: %lf\n", getSIS(X));
     return 0;
 }
