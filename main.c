@@ -13,7 +13,7 @@
 #define GRAVITY 979.8
 #define ADDRESS 0x18
 #define CTRL_REG1 0x57
-#define INTERVAL 7000
+#define INTERVAL 5000
 #define X_OFFSET -26
 #define Y_OFFSET -6
 #define Z_OFFSET 982
@@ -46,6 +46,7 @@ double getSynVecSize(double v1, double v2, double v3) {
 
 double getSIS(double *arr) {
     double a = quick_select(arr, N, (int) ceil(FREQ * 0.3) - 1);
+    printf("a:%lf", a);
     return 2 * log10(a) + 0.94;
 }
 
