@@ -4,7 +4,7 @@ double quick_select(double A[], int n, int k){
 
     pivot = A[0];
     for (h = i = j = 1; i < n; i++){
-        if (A[i] > pivot){
+        if (A[i] < pivot){
             tmp = A[j];
             A[j] = A[i];
             A[i] = tmp;
@@ -18,6 +18,6 @@ double quick_select(double A[], int n, int k){
     }
 
     if (j - h < k + 1 && k + 1 <= j) return pivot;
-    else if (j < k+1) return quick_select(A+j, n-j, k-j);
-    else return quick_select(A+h, j-h, k);
+    if (j < k+1) return quick_select(A+j, n-j, k-j);
+    return quick_select(A+h, j-h, k);
 }
