@@ -109,7 +109,7 @@ void filtering(double *A){
     fft(CC, R1);
     printf("awfhuioe\n");
     CC[0] = creal(CC[0]) * FILTER[0];
-    CC[N1] = creal(CC[N1]) * FILTER[N1];
+    CC[N1] = creal(CC[N1]) * FILTER[N1-1];
     for (i = 1; i < N1; i++) {
         tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
         tmp2 = (CC[i] - conj(CC[N1-i])) / -2 * I * OMEGA[i<<1];
