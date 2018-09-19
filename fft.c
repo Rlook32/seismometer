@@ -101,13 +101,10 @@ void filtering(double *A){
     cmplx tmp1, tmp2;
     initOmega();
     initFilter();
-    printf("finished initialize\n");
     for (i = 0; i < N1; i++) {
         CC[i] = A[2*i] + A[2*i+1] * I;
     }
-    printf("gfaw\n");
     fft(CC, R1);
-    printf("awfhuioe\n");
     CC[0] = creal(CC[0]) * FILTER[0];
     CC[N1] = creal(CC[N1]) * FILTER[N1-1];
     for (i = 1; i < N1; i++) {
@@ -116,9 +113,7 @@ void filtering(double *A){
         CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
         CC[N1+i] = conj((tmp1 + tmp2) * FILTER[N1-i-1]);
     }
-    printf("fawef\n");
     fft(CC, R);
-    printf("afowe\n");
     for (i = 0; i < N; i++) {
         A[i] = creal(CC[i]) / N;
     }

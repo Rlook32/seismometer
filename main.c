@@ -27,17 +27,17 @@ __s32 s18(__s32 value) {
 
 double getAccX() {
     __s16 xRaw = (i2c_smbus_read_byte_data(fd, 0x29) << 8 | i2c_smbus_read_byte_data(fd, 0x28)) >> 4;
-    return (((double) s18(xRaw)) - X_OFFSET) / 1024 * GRAVITY;
+    return ((double) (s18(xRaw) - X_OFFSET)) / 1024 * GRAVITY;
 }
 
 double getAccY() {
     __s16 yRaw = (i2c_smbus_read_byte_data(fd, 0x2B) << 8 | i2c_smbus_read_byte_data(fd, 0x2A)) >> 4;
-    return (((double) s18(yRaw)) - Y_OFFSET) / 1024 * GRAVITY;
+    return ((double) (s18(yRaw) - Y_OFFSET)) / 1024 * GRAVITY;
 }
 
 double getAccZ() {
     __s32 zRaw = (i2c_smbus_read_byte_data(fd, 0x2D) << 8 | i2c_smbus_read_byte_data(fd, 0x2C)) >> 4;
-    return (((double) s18(zRaw)) - Z_OFFSET) / 1024 * GRAVITY;
+    return ((double) (s18(zRaw) - Z_OFFSET)) / 1024 * GRAVITY;
 }
 
 double getSynVecSize(double v1, double v2, double v3) {
@@ -76,6 +76,7 @@ int main(int argc, char **argv) {
         Z[i] = getAccZ();
         usleep(INTERVAL);
     }
+    printf("%ld\n", Y[432]);
     stopMeasurement();
     printf("finished mesuring and now start filtering\n");
     filtering(X);
