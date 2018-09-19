@@ -112,7 +112,6 @@ void filtering(double *A){
         tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
         tmp2 = (CC[i] - conj(CC[N1-i])) / -2 * I * OMEGA[i<<1];
         CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
-        CC[N1 + i] = conj((tmp1 - tmp2) * FILTER[N1-i-1]);
     }
     printf("fawef\n");
     fft(CC, R1);
