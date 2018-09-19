@@ -85,7 +85,6 @@ int main(int argc, char **argv) {
     printf("finished filtering and now start calculating SIS\n");
     for (int i = 0; i < N; i++) {
         X[i] = getSynVecSize(X[i], Y[i], Z[i]);
-        printf("%lf, ", X[i]);
     }
     printf("finished caluculating SIS\n");
     printf("SIS: %lf\n", getSIS(X));
