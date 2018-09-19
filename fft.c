@@ -100,18 +100,23 @@ void filtering(double *A){
     int i;
     cmplx tmp1, tmp2;
     initOmega();
+    initFilter();
+    printf("finished initialize\n");
     for (i = 0; i < N1; i++) {
         CC[i] = A[2*i] + A[2*i+1] * I;
     }
-    fft(CC, R-1);
-
+    printf("gfaw\n");
+    fft(CC, R1);
+    printf("awfhuioe\n");
     for (i = 0; i < N1; i++) {
         tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
         tmp2 = (CC[i] - conj(CC[N1-i])) / -2 * I * OMEGA[i<<1];
         CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
         CC[N1 + i] = conj((tmp1 - tmp2) * FILTER[N1-i-1]);
     }
-    fft(CC, R-1);
+    printf("fawef\n");
+    fft(CC, R1);
+    printf("afowe\n");
     for (i = 0; i < N1; i++) {
         A[2*i] = creal(CC[i]);
         A[2*i+1] = -cimag(CC[i]);
