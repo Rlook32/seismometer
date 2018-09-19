@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
         Z[i] = getAccZ();
         usleep(INTERVAL);
     }
-    printf("%ld\n", Y[432]);
     stopMeasurement();
     printf("finished mesuring and now start filtering\n");
     filtering(X);
@@ -85,7 +84,6 @@ int main(int argc, char **argv) {
     printf("finished filtering and now start calculating SIS\n");
     for (int i = 0; i < N; i++) {
         X[i] = getSynVecSize(X[i], Y[i], Z[i]);
-        printf("%ld, ", X[i]);
     }
     printf("finished caluculating SIS\n");
     printf("SIS: %lf\n", getSIS(X));
