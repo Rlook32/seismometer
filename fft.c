@@ -3,11 +3,9 @@
 #include <math.h>
 #include <complex.h>
 
-#define PI2 6.28318530717958647692
+#include "defines.h"
 
-#define R 18
-#define N (1<<R)
-#define N1 (1<<(R-1))
+#define PI2 6.28318530717958647692
 #define ll long long int
 
 typedef double complex cmplx;
@@ -25,6 +23,31 @@ void initOmega(){
         for (j = (1<<i) + 1; j < (1<<(i+1)); j++) {
             OMEGA[j] = OMEGA[1<<i] * OMEGA[j-(1<<i)];
         }
+    }
+}
+
+double hcf(double freq) {
+    double y2, cy = y2 = freq * freq / 100, res = 1;
+    res += 0.694 * cy;
+    cy *= y2;
+    res += 0.241 * cy;
+    cy *= y2;
+    res += 0.0557 * cy;
+    cy *= y2;
+    res += 0.009664 * cy;
+    cy *= y2;
+    res += 0.00134 * cy;
+    cy *= y2;
+    res += 0.000155 * cy;
+    return 1 / sqrt(res);
+}
+
+double FILTER[N1];
+void initFilter() {
+    int i;
+    for (i = 0; i < N1; i++) {
+        double freq = i * FREQ / N;
+        FILTER[i] = sqrt(1 / freq) * hcf(freq) * sqrt(1-exp(-pow(freq*2, 3)));
     }
 }
 
@@ -61,23 +84,27 @@ void fft(cmplx *A, int k){
     }
 }
 
-cmplx CC[N];
+cmplx CC[N1];
 
-void convolve(int *A, int *B, int *C, int n){
+// n must be odd
+void filtering(double *A){
     int i;
+    cmplx tmp1, tmp2;
     initOmega();
-    for (i = 0; i <= n; i++) {
-        CC[i] = A[i] + B[i] * I;
+    for (i = 0; i < N1; i++) {
+        CC[i] = A[2*i] + A[2*i+1] * I;
     }
-    fft(CC, R);
-    CC[0] = conj(creal(CC[0]) * cimag(CC[0]));
-    CC[N1] = conj(creal(CC[N1]) * cimag(CC[N1]));
-    for (i = 1; i < (N1); i++) {
-        CC[N-i] = (CC[i] + conj(CC[N-i])) * (CC[i] - conj(CC[N-i])) / 4 / I;
-        CC[i] = conj(CC[N-i]);
+    fft(A, R-1);
+
+    for (i = 0; i < N1; i++) {
+        tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
+        tmp2 = (CC[i] - conj(CC[N1-i])) / -2 * I * OMEGA[i<<1];
+        CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
+        CC[N1 + i] = conj((tmp1 - tmp2) * FILTER[N1-i-1]);
     }
-    fft(CC, R);
-    for (i = 0; i <= 2 * n; i++) {
-        C[i] = ((ll)round(creal(CC[i]))>>R);
+    fft(A, R);
+    for (i = 0; i < N1; i++) {
+        A[2*i] = creal(CC[i])
+        A[2*i+1] = -cimag(CC[i])
     }
 }
