@@ -14,6 +14,15 @@ void printCmplx(cmplx c) {
     printf("%f+%fi", creal(c), cimag(c));
 }
 
+unsigned bitreverse32(unsigned x) {
+   x = (x & 0x55555555) <<  1 | (x >>  1) & 0x55555555;
+   x = (x & 0x33333333) <<  2 | (x >>  2) & 0x33333333;
+   x = (x & 0x0F0F0F0F) <<  4 | (x >>  4) & 0x0F0F0F0F;
+   x = (x << 24) | ((x & 0xFF00) << 8) |
+       ((x >> 8) & 0xFF00) | (x >> 24);
+   return x;
+}
+
 cmplx OMEGA[N];
 void initOmega(){
     int i, j;
@@ -55,7 +64,7 @@ void brp(cmplx *A, int k) {
     int i, index;
     cmplx tmp;
     for (i = 0; i < (1<<k); i++) {
-        index = (__builtin_bitreverse32(i))>>(32-k);
+        index = (bitreverse32(i))>>(32-k);
         if (index <= i) continue;
         tmp = A[index];
         A[index] = A[i];
@@ -94,7 +103,7 @@ void filtering(double *A){
     for (i = 0; i < N1; i++) {
         CC[i] = A[2*i] + A[2*i+1] * I;
     }
-    fft(A, R-1);
+    fft(CC, R-1);
 
     for (i = 0; i < N1; i++) {
         tmp1 = (CC[i] + conj(CC[N1-i])) / 2;
@@ -102,9 +111,9 @@ void filtering(double *A){
         CC[i] = conj((tmp1 + tmp2) * FILTER[i]);
         CC[N1 + i] = conj((tmp1 - tmp2) * FILTER[N1-i-1]);
     }
-    fft(A, R);
+    fft(CC, R-1);
     for (i = 0; i < N1; i++) {
-        A[2*i] = creal(CC[i])
-        A[2*i+1] = -cimag(CC[i])
+        A[2*i] = creal(CC[i]);
+        A[2*i+1] = -cimag(CC[i]);
     }
 }
