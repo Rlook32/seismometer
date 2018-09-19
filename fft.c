@@ -116,6 +116,5 @@ void filtering(double *A){
     fft(CC, R);
     for (i = 0; i < N; i++) {
         A[i] = creal(CC[i]) / N;
-        printf("%lf, %lf", A[i], CC[i]);
     }
 }
