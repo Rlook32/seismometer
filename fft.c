@@ -48,7 +48,7 @@ double hcf(double freq) {
     res += 0.00134 * cy;
     cy *= y2;
     res += 0.000155 * cy;
-    return 1 / sqrt(res);
+    return (double) (1 / sqrt(res));
 }
 
 double FILTER[N1];

@@ -1,9 +1,10 @@
+#include <stdio.h>
+
 double quick_select(double A[], int n, int k){
     int h, i, j;
     double tmp, pivot;
 
     pivot = A[0];
-    printf("%lf\n", pivot);
     for (h = i = j = 1; i < n; i++){
         if (A[i] < pivot){
             tmp = A[j];
@@ -18,7 +19,7 @@ double quick_select(double A[], int n, int k){
         }
     }
 
-    if (j - h < k + 1 && k + 1 <= j) return pivot;
-    if (j < k+1) return quick_select(A+j, n-j, k-j);
-    return quick_select(A+h, j-h, k);
+    if (j - h < k + 1 && k + 1 <= j) return (double) pivot;
+    if (j < k+1) return (double) quick_select(A+j, n-j, k-j);
+    return (double) quick_select(A+h, j-h, k);
 }
