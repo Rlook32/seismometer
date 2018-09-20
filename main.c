@@ -45,9 +45,9 @@ double getSynVecSize(double v1, double v2, double v3) {
 }
 
 double getSIS(double arr[]) {
-    double a = (double) quick_select(arr, N, N - ((int) ceil(FREQ * 0.3)) - 1);
-    printf("a:%lf\n", a);
-    return (double) 2 * log10(a) + 0.94;
+    int aIndex = quick_select(arr, N, N - ((int) ceil(FREQ * 0.3)) - 1);
+    printf("a:%lf\n", a[aIndex]);
+    return (double) 2 * log10(arr[aIndex]) + 0.94;
 }
 
 
