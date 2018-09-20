@@ -68,10 +68,11 @@ void stopMeasurement() {
 double X[N], Y[N], Z[N];
 
 int main(int argc, char **argv) {
+    int i;
     if (init() < 0) return -1;
     printf("start measuring\n");
     startMeasurement();
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         X[i] = getAccX();
         Y[i] = getAccY();
         Z[i] = getAccZ();
@@ -83,7 +84,7 @@ int main(int argc, char **argv) {
     filtering(Y);
     filtering(Z);
     printf("finished filtering and now start calculating SIS\n");
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         X[i] = getSynVecSize(X[i], Y[i], Z[i]);
     }
     printf("finished caluculating SIS\n");
